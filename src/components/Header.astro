@@ -1,0 +1,414 @@
+---
+import SocialIcon from "./SocialIcon.astro";
+
+interface HeaderProps {
+  buttonId?: string;
+  sidebarId?: string;
+}
+
+const { buttonId = "menu-button", sidebarId = "sidebar" } =
+  Astro.props as HeaderProps;
+---
+
+<header>
+  <!-- Mobile Header -->
+  <div class="mobile-header">
+    <div class="half-container">
+      <button
+        class="icon-button secondary"
+        aria-controls={sidebarId}
+        aria-expanded="false"
+        id={buttonId}
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <a href="/">
+      <span class="brand-title-mobile">Eddie's Place</span>
+    </a>
+
+    <div class="half-container">
+      <div class="spacer"></div>
+      <a href="#contact" class="icon-button secondary">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+          ></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Desktop Header -->
+  <div class="desktop-header">
+    <div class="half-container icon-container">
+      <a
+        href="/"
+        class="icon-button secondary"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <SocialIcon type="tiktok" />
+      </a>
+      <a
+        href="/"
+        class="icon-button secondary"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <SocialIcon type="youtube" />
+      </a>
+      <a
+        href="/"
+        class="icon-button secondary"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <SocialIcon type="instagram" />
+      </a>
+    </div>
+
+    <a href="/">
+      <span class="brand-title">Eddie's Place</span>
+    </a>
+
+    <div class="half-container">
+      <div class="spacer"></div>
+      <nav class="link-nav">
+        <a href="#gallery" class="nav-button secondary">Gallery</a>
+        <a href="#contact" class="nav-button secondary">Contact</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Sidebar -->
+  <div class="mobile-sidebar" id={sidebarId}>
+    <div class="mobile-sidebar-content">
+      <div class="mobile-sidebar-header">
+        <span class="brand-title-mobile">Eddie's Place</span>
+        <button class="close-button" id="close-menu">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="mobile-nav">
+        <a href="#gallery" class="mobile-nav-link">Gallery</a>
+        <a href="#contact" class="mobile-nav-link">Contact</a>
+      </nav>
+
+      <div class="mobile-social">
+        <SocialIcon href="/" type="tiktok" />
+        <SocialIcon href="/" type="youtube" />
+        <SocialIcon href="/" type="instagram" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+  <div class="mobile-overlay" id="mobile-overlay"></div>
+
+  <style>
+    .brand-title {
+      font-family: "DM Serif Display", serif;
+      font-weight: 400;
+      color: #212121;
+      font-size: 32px;
+    }
+
+    .brand-title-mobile {
+      font-family: "DM Serif Display", serif;
+      font-weight: 400;
+      color: #212121;
+      font-size: 20px;
+    }
+
+    /* Mobile breakpoint - hide mobile header on desktop */
+    @media (min-width: 768px) {
+      .mobile-header {
+        display: none !important;
+      }
+    }
+
+    /* Desktop breakpoint - hide desktop header on mobile */
+    @media (max-width: 767px) {
+      .desktop-header {
+        display: none !important;
+      }
+    }
+
+    .mobile-header,
+    .desktop-header {
+      background-color: #fafafa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mobile-header {
+      padding: 0 24px;
+      height: 72px;
+    }
+
+    .mobile-header .center-logo {
+      border-radius: 50%;
+      height: 48px;
+      width: 48px;
+    }
+
+    .desktop-header {
+      padding: 0 48px;
+      height: 84px;
+    }
+
+    .desktop-header .center-logo {
+      border-radius: 50%;
+      height: 64px;
+      width: 64px;
+    }
+
+    .half-container {
+      width: 1px;
+      flex-grow: 1;
+      display: flex;
+    }
+
+    .icon-container {
+      gap: 12px;
+    }
+
+    .spacer {
+      width: 1px;
+      flex-grow: 1;
+    }
+
+    .link-nav {
+      display: flex;
+      gap: 16px;
+    }
+
+    .icon-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.2s ease;
+      text-decoration: none;
+      color: #212121;
+    }
+
+    .icon-button.secondary {
+      color: #212121;
+    }
+
+    .nav-button {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #212121;
+      font-family: "DM Serif Display", serif;
+      font-weight: 400;
+      font-size: 20px;
+    }
+
+    .nav-button.secondary {
+      color: #212121;
+    }
+
+    /* Mobile Sidebar Styles */
+    .mobile-sidebar {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 280px;
+      height: 100vh;
+      background: white;
+      z-index: 1000;
+      transition: left 0.3s ease;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .mobile-sidebar.open {
+      left: 0;
+    }
+
+    .mobile-sidebar-content {
+      padding: 24px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mobile-sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .sidebar-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+    }
+
+    .close-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 4px;
+      color: #212121;
+    }
+
+    .mobile-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex-grow: 1;
+    }
+
+    .mobile-nav-link {
+      display: block;
+      padding: 16px 0;
+      text-decoration: none;
+      color: #212121;
+      font-size: 18px;
+      border-bottom: 1px solid #f0f0f0;
+      transition: color 0.2s ease;
+      font-family: "DM Serif Display", serif;
+      font-weight: 400;
+    }
+
+    .mobile-social {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      padding-top: 24px;
+      border-top: 1px solid #e5e5e5;
+    }
+
+    .mobile-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+    }
+
+    .mobile-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Hide mobile sidebar on desktop */
+    @media (min-width: 768px) {
+      .mobile-sidebar,
+      .mobile-overlay {
+        display: none !important;
+      }
+    }
+  </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const menuButton = document.getElementById("menu-button");
+      const closeButton = document.getElementById("close-menu");
+      const sidebar = document.getElementById("sidebar");
+
+      // Open/toggle menu when hamburger button is clicked
+      menuButton?.addEventListener("click", function () {
+        const isExpanded = menuButton.getAttribute("aria-expanded") === "true";
+
+        // Toggle aria-expanded
+        menuButton.setAttribute("aria-expanded", (!isExpanded).toString());
+
+        // Toggle sidebar visibility based on aria-expanded
+        if (!isExpanded) {
+          sidebar?.classList.add("open");
+        } else {
+          sidebar?.classList.remove("open");
+        }
+      });
+
+      // Close menu when X button is clicked
+      closeButton?.addEventListener("click", function () {
+        menuButton?.setAttribute("aria-expanded", "false");
+        sidebar?.classList.remove("open");
+      });
+
+      // Smooth scroll functionality for navigation links
+      function smoothScrollToSection(targetId: string) {
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }
+
+      // Add smooth scroll to all navigation links
+      const navLinks = document.querySelectorAll('a[href^="#"]');
+      navLinks.forEach((link) => {
+        link.addEventListener("click", function (e: Event) {
+          e.preventDefault();
+          const target = e.currentTarget as HTMLAnchorElement;
+          const targetId = target.getAttribute("href")?.substring(1);
+
+          if (!targetId) return;
+
+          // Close mobile menu if it's open
+          if (sidebar?.classList.contains("open")) {
+            menuButton?.setAttribute("aria-expanded", "false");
+            sidebar?.classList.remove("open");
+          }
+
+          // Scroll to section
+          smoothScrollToSection(targetId);
+        });
+      });
+    });
+  </script>
+</header>

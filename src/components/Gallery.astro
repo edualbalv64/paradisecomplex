@@ -1,0 +1,185 @@
+---
+import carousel1 from "../images/carousel/carousel1.jpeg";
+import carousel2 from "../images/carousel/carousel2.jpeg";
+import carousel3 from "../images/carousel/carousel3.jpeg";
+import carousel4 from "../images/carousel/carousel4.jpeg";
+import carousel5 from "../images/carousel/carousel5.jpeg";
+import carousel6 from "../images/carousel/carousel6.jpeg";
+import carousel7 from "../images/carousel/carousel7.jpeg";
+import carousel8 from "../images/carousel/carousel8.jpeg";
+import carousel9 from "../images/carousel/carousel9.jpeg";
+import carousel10 from "../images/carousel/carousel10.jpeg";
+import carousel11 from "../images/carousel/carousel11.jpeg";
+import carousel12 from "../images/carousel/carousel12.jpeg";
+import carousel13 from "../images/carousel/carousel13.jpeg";
+import carousel14 from "../images/carousel/carousel14.jpeg";
+import carousel15 from "../images/carousel/carousel15.jpeg";
+
+const images = [
+  { src: carousel1.src, alt: "Gallery image 1", title: "Photo Title" },
+  { src: carousel2.src, alt: "Gallery image 2", title: "Photo Title" },
+  { src: carousel3.src, alt: "Gallery image 3", title: "Photo Title" },
+  { src: carousel4.src, alt: "Gallery image 4", title: "Photo Title" },
+  { src: carousel5.src, alt: "Gallery image 5", title: "Photo Title" },
+  { src: carousel6.src, alt: "Gallery image 6", title: "Photo Title" },
+  { src: carousel7.src, alt: "Gallery image 7", title: "Photo Title" },
+  { src: carousel8.src, alt: "Gallery image 8", title: "Photo Title" },
+  { src: carousel9.src, alt: "Gallery image 9", title: "Photo Title" },
+  { src: carousel10.src, alt: "Gallery image 10", title: "Photo Title" },
+  { src: carousel11.src, alt: "Gallery image 11", title: "Photo Title" },
+  { src: carousel12.src, alt: "Gallery image 12", title: "Photo Title" },
+  { src: carousel13.src, alt: "Gallery image 13", title: "Photo Title" },
+  { src: carousel14.src, alt: "Gallery image 14", title: "Photo Title" },
+  { src: carousel15.src, alt: "Gallery image 15", title: "Photo Title" },
+];
+---
+
+<section id="gallery" class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-6">
+    <h2
+      class="text-[28px] md:text-[44px] font-bold text-left mb-12 text-gray-800 brand-font"
+    >
+      Gallery
+    </h2>
+
+    <div
+      id="gallery-container"
+      class="gallery-container overflow-x-auto cursor-grab"
+    >
+      <div class="gallery-scroll flex gap-6 pb-4">
+        {
+          images.map((image) => (
+            <div class="gallery-item flex-shrink-0">
+              <div class="overflow-hidden rounded-2xl shadow-md ">
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  class="gallery-image object-cover"
+                />
+              </div>
+              <h3 class="text-[20px] md:text-[36px] font-semibold mt-3 text-gray-800 brand-font">
+                {image.title}
+              </h3>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .brand-font {
+    font-family: "DM Serif Display", serif;
+    font-weight: 400;
+    color: #212121;
+  }
+
+  .gallery-container {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+
+  .gallery-container::-webkit-scrollbar {
+    display: none; /* WebKit */
+  }
+
+  .gallery-scroll {
+    width: max-content;
+  }
+
+  .gallery-item {
+    width: 696px;
+  }
+
+  .gallery-image {
+    width: 696px;
+    height: 522px;
+  }
+
+  @media (max-width: 640px) {
+    .gallery-item {
+      width: 280px;
+    }
+
+    .gallery-image {
+      width: 280px;
+      height: 210px;
+    }
+  }
+
+  .gallery-container.dragging {
+    cursor: grabbing;
+    scroll-behavior: auto;
+  }
+
+  .gallery-container:not(.dragging) {
+    scroll-behavior: smooth;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("gallery-container");
+    if (!container) return;
+
+    let isDown = false;
+    let startX: number;
+    let scrollLeft: number;
+
+    // Mouse events
+    container.addEventListener("mousedown", (e) => {
+      isDown = true;
+      container.classList.add("dragging");
+      startX = e.pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+      e.preventDefault();
+    });
+
+    container.addEventListener("mouseleave", () => {
+      isDown = false;
+      container.classList.remove("dragging");
+    });
+
+    container.addEventListener("mouseup", () => {
+      isDown = false;
+      container.classList.remove("dragging");
+    });
+
+    container.addEventListener("mousemove", (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const walk = (x - startX) * 2; // Scroll speed multiplier
+      container.scrollLeft = scrollLeft - walk;
+    });
+
+    // Touch events for mobile
+    container.addEventListener("touchstart", (e) => {
+      isDown = true;
+      container.classList.add("dragging");
+      startX = e.touches[0].pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+    });
+
+    container.addEventListener("touchend", () => {
+      isDown = false;
+      container.classList.remove("dragging");
+    });
+
+    container.addEventListener("touchmove", (e) => {
+      if (!isDown) return;
+      const x = e.touches[0].pageX - container.offsetLeft;
+      const walk = (x - startX) * 2;
+      container.scrollLeft = scrollLeft - walk;
+    });
+
+    // Prevent image dragging
+    const images = container.querySelectorAll("img");
+    images.forEach((img) => {
+      img.addEventListener("dragstart", (e) => {
+        e.preventDefault();
+      });
+    });
+  });
+</script>

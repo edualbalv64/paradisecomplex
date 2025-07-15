@@ -1,0 +1,121 @@
+---
+import hero1 from "../images/hero/hero1.jpeg";
+import hero2 from "../images/hero/hero2.jpeg";
+import hero3 from "../images/hero/hero3.jpeg";
+import hero4 from "../images/hero/hero4.jpeg";
+import hero5 from "../images/hero/hero5.jpeg";
+
+const heroImages = [hero1, hero2, hero3, hero4, hero5];
+---
+
+<section
+  id="hero-section"
+  class="hero-bg h-[608px] md:min-h-screen flex items-center justify-center text-white relative overflow-hidden"
+>
+  <div
+    id="hero-bg-1"
+    class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out"
+    style={`background-image: url(${heroImages[0].src}); opacity: 1;`}
+  >
+  </div>
+  <div
+    id="hero-bg-2"
+    class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out"
+    style="opacity: 0;"
+  >
+  </div>
+  <div class="absolute inset-0 bg-black opacity-40"></div>
+
+  <div
+    class="hero-description text-center px-6 mx-auto relative z-10"
+    style="max-width: 944px;"
+  >
+    <h2 class="hero-title mb-10 md:mb-12 lg:mb-16 font-normal">
+      Your Home In Paradise
+    </h2>
+    <p class="text-lg md:text-xl mb-8 md:mb-10">
+      Discover the perfect balance of privacy and convenience.
+    </p>
+    <p class="text-sm md:text-xl mb-8 md:mb-10 max-w-sm mx-auto md:max-w-2xl">
+      Eddie's Place puts you at the heart of Guanacaste's best: world-class
+      beaches, local markets, restaurants, and vibrant nightlife — all just
+      minutes from your doorstep.
+    </p>
+    <p class="text-sm md:text-xl mb-10 md:mb-12 max-w-sm mx-auto md:max-w-2xl">
+      Wake up to the sounds of nature, spend your days exploring everything the
+      coast has to offer, and come home to luxury, security, and community.
+      Whether you're looking for a smart investment or your own slice of
+      paradise, this is where location meets lifestyle.
+    </p>
+    <a href="#contact" class="hero-button text-center"> Get In Touch </a>
+  </div>
+</section>
+
+<style>
+  .hero-title {
+    font-family: "DM Serif Display", serif;
+    font-size: 28px;
+  }
+
+  @media (min-width: 768px) {
+    .hero-title {
+      font-size: 44px;
+    }
+  }
+
+  .hero-button {
+    padding: 12px 48px;
+    gap: 12px;
+    width: 221px;
+    height: 52px;
+    background: #fafafa;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+    flex: none;
+    order: 2;
+    flex-grow: 0;
+    text-decoration: none;
+    color: #212121;
+    font-weight: 400;
+    font-family: "DM Serif Display", serif;
+    font-size: 12px;
+  }
+
+  @media (min-width: 768px) {
+    .hero-button {
+      font-size: 20px;
+    }
+  }
+
+  .hero-description {
+    font-family: "Lexend", sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+  }
+</style>
+
+<script define:vars={{ heroImages }} is:inline>
+  let currentImageIndex = 0;
+  let isFirstLayer = true;
+  const heroBg1 = document.getElementById("hero-bg-1");
+  const heroBg2 = document.getElementById("hero-bg-2");
+
+  function rotateHeroImage() {
+    currentImageIndex = (currentImageIndex + 1) % heroImages.length;
+
+    if (isFirstLayer) {
+      heroBg2.style.backgroundImage = `url(${heroImages[currentImageIndex].src})`;
+      heroBg2.style.opacity = "1";
+      heroBg1.style.opacity = "0";
+    } else {
+      heroBg1.style.backgroundImage = `url(${heroImages[currentImageIndex].src})`;
+      heroBg1.style.opacity = "1";
+      heroBg2.style.opacity = "0";
+    }
+
+    isFirstLayer = !isFirstLayer;
+  }
+
+  // Change image every 5 seconds
+  setInterval(rotateHeroImage, 5000);
+</script>

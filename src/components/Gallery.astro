@@ -35,31 +35,30 @@ const images = [
 ---
 
 <section id="gallery" class="py-20 bg-white">
-  <div class="max-w-7xl mx-auto px-6">
+  <div class="md:max-w-7xl md:mx-auto md:px-6">
     <h2
-      class="text-[28px] md:text-[44px] font-bold text-left mb-12 text-gray-800 brand-font"
+      class="text-[28px] md:text-[44px] font-bold text-left mb-12 text-gray-800 brand-font px-6 md:px-0"
     >
       Gallery
     </h2>
 
-    <div
-      id="gallery-container"
-      class="gallery-container overflow-x-auto cursor-grab"
-    >
-      <div class="gallery-scroll flex gap-6 pb-4">
+    <div class="swiper gallery-swiper">
+      <div class="swiper-wrapper">
         {
           images.map((image) => (
-            <div class="gallery-item flex-shrink-0">
-              <div class="overflow-hidden rounded-2xl shadow-md ">
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  class="gallery-image object-cover"
-                />
+            <div class="swiper-slide">
+              <div class="gallery-item">
+                <div class="overflow-hidden rounded-2xl shadow-md">
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    class="gallery-image object-cover"
+                  />
+                </div>
+                <h3 class="text-[20px] md:text-[36px] font-semibold mt-3 text-gray-800 brand-font text-left">
+                  {image.title}
+                </h3>
               </div>
-              <h3 class="text-[20px] md:text-[36px] font-semibold mt-3 text-gray-800 brand-font">
-                {image.title}
-              </h3>
             </div>
           ))
         }
@@ -75,111 +74,108 @@ const images = [
     color: #212121;
   }
 
-  .gallery-container {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
-  }
-
-  .gallery-container::-webkit-scrollbar {
-    display: none; /* WebKit */
-  }
-
-  .gallery-scroll {
-    width: max-content;
+  .gallery-swiper {
+    width: 100%;
   }
 
   .gallery-item {
-    width: 696px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
   }
 
   .gallery-image {
     width: 696px;
-    height: 522px;
+    height: 500px;
+    object-fit: cover;
   }
 
   @media (max-width: 640px) {
+    .gallery-swiper {
+      margin: 0;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      padding: 0;
+    }
+
+    .swiper-slide {
+      width: 100vw !important;
+      display: flex !important;
+      justify-content: center !important;
+    }
+
     .gallery-item {
       width: 280px;
+      padding: 0;
+      margin: 0;
     }
 
     .gallery-image {
       width: 280px;
       height: 210px;
+      object-fit: cover;
     }
-  }
 
-  .gallery-container.dragging {
-    cursor: grabbing;
-    scroll-behavior: auto;
-  }
-
-  .gallery-container:not(.dragging) {
-    scroll-behavior: smooth;
+    .gallery-item h3 {
+      padding: 0;
+      text-align: center;
+    }
   }
 </style>
 
 <script>
+  import { Swiper } from "swiper";
+  import "swiper/css";
+  import "swiper/css/navigation";
+  import "swiper/css/pagination";
+
   document.addEventListener("DOMContentLoaded", function () {
-    const container = document.getElementById("gallery-container");
-    if (!container) return;
+    new Swiper(".gallery-swiper", {
+      // Mobile-first settings
+      slidesPerView: 1,
+      spaceBetween: 20,
+      centeredSlides: false,
 
-    let isDown = false;
-    let startX: number;
-    let scrollLeft: number;
+      // Touch settings for better mobile experience
+      touchRatio: 1,
+      touchAngle: 45,
+      grabCursor: true,
 
-    // Mouse events
-    container.addEventListener("mousedown", (e) => {
-      isDown = true;
-      container.classList.add("dragging");
-      startX = e.pageX - container.offsetLeft;
-      scrollLeft = container.scrollLeft;
-      e.preventDefault();
-    });
+      // Navigation
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
 
-    container.addEventListener("mouseleave", () => {
-      isDown = false;
-      container.classList.remove("dragging");
-    });
+      // Pagination
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
 
-    container.addEventListener("mouseup", () => {
-      isDown = false;
-      container.classList.remove("dragging");
-    });
+      // Responsive breakpoints (mobile-first)
+      breakpoints: {
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 24,
+          centeredSlides: false,
+        },
+        1024: {
+          slidesPerView: 2,
+          spaceBetween: 24,
+          centeredSlides: true,
+        },
+      },
 
-    container.addEventListener("mousemove", (e) => {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - container.offsetLeft;
-      const walk = (x - startX) * 2; // Scroll speed multiplier
-      container.scrollLeft = scrollLeft - walk;
-    });
+      // Smooth transitions
+      speed: 400,
 
-    // Touch events for mobile
-    container.addEventListener("touchstart", (e) => {
-      isDown = true;
-      container.classList.add("dragging");
-      startX = e.touches[0].pageX - container.offsetLeft;
-      scrollLeft = container.scrollLeft;
-    });
+      // Loop for infinite scroll
+      loop: true,
 
-    container.addEventListener("touchend", () => {
-      isDown = false;
-      container.classList.remove("dragging");
-    });
-
-    container.addEventListener("touchmove", (e) => {
-      if (!isDown) return;
-      const x = e.touches[0].pageX - container.offsetLeft;
-      const walk = (x - startX) * 2;
-      container.scrollLeft = scrollLeft - walk;
-    });
-
-    // Prevent image dragging
-    const images = container.querySelectorAll("img");
-    images.forEach((img) => {
-      img.addEventListener("dragstart", (e) => {
-        e.preventDefault();
-      });
+      // Auto height
+      autoHeight: false,
     });
   });
 </script>

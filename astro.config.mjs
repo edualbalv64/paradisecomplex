@@ -4,8 +4,7 @@ import { defineConfig } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://edualbalv64.github.io/paradisecomplex/",
-  base: "paradisecomplex",
+  site: "tropicalparadisecomplex.com",
   vite: {
     plugins: [tailwindcss()],
   },
